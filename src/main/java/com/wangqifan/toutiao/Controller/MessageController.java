@@ -75,7 +75,7 @@ public class MessageController {
                 conversations.add(vo);
             }
             model.addAttribute("conversations", conversations);
-            System.out.println(conversations.size());
+//            System.out.println(conversations.size());
             return "letter";
         } catch (Exception e) {
            //
@@ -89,9 +89,10 @@ public class MessageController {
     public String addMessage(@RequestParam("fromId") int fromId,
                              @RequestParam("toId") int toId,
                              @RequestParam("content") String content) {
-        System.out.println(fromId+"====="+toId+"===="+content);
+//        System.out.println(fromId+"====="+toId+"===="+content);
         fromId=hostHolder.getUser().getId();
         Message msg = new Message();
+        System.out.println(fromId+"======");
         msg.setContent(content);
         msg.setCreatedDate(new Date());
         msg.setToId(toId);
@@ -99,6 +100,7 @@ public class MessageController {
         msg.setConversationId(fromId < toId ? String.format("%d_%d", fromId, toId) :
                 String.format("%d_%d", toId, fromId));
         messageService.addMessage(msg);
+        System.out.println("=====测试=====");
         return ToutiaoUtil.getJSONString(msg.getId());
     }
 }
