@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 public class LikeService {
     @Autowired
     private JedisAdapter jedisAdapter;
+
+    private final static int LIVE_TIME = 1800;
+
     //某个用户对某个东西喜欢还是不喜欢
     //entityId传入的是newsid
     public int getLikeStatus(int userId, int entityType, int entityId) {
@@ -25,6 +28,8 @@ public class LikeService {
         // 在喜欢集合里增加
         String likeKey = RedisKeyUtil.getLikeKey(entityId, entityType);
         jedisAdapter.sadd(likeKey, String.valueOf(userId));
+//第一次修改，增加了点赞的过期时间
+        jedisAdapter.setExpire(likeKey,LIVE_TIME);
         // 从反对里删除
         String disLikeKey = RedisKeyUtil.getDisLikeKey(entityId, entityType);
         jedisAdapter.srem(disLikeKey, String.valueOf(userId));
@@ -35,6 +40,8 @@ public class LikeService {
         // 在反对集合里增加
         String disLikeKey = RedisKeyUtil.getDisLikeKey(entityId, entityType);
         jedisAdapter.sadd(disLikeKey, String.valueOf(userId));
+//第二次修改，增加了点踩的过期时间
+        jedisAdapter.setExpire(disLikeKey,LIVE_TIME);
         // 从喜欢里删除
         String likeKey = RedisKeyUtil.getLikeKey(entityId, entityType);
         jedisAdapter.srem(likeKey, String.valueOf(userId));

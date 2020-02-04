@@ -186,4 +186,11 @@ public class JedisAdapter implements InitializingBean {
         }
         return result;
     }
+
+    public void setExpire(String key,int seconds){
+        Jedis jedis = null;
+        jedis = pool.getResource();
+        jedis.expire(key,seconds);
+        jedis.close();
+    }
 }

@@ -44,7 +44,7 @@ public class LikeController {
     @RequestMapping(path = {"/like"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String like(@Param("newId") int newsId) {
-        logger.info("====测试=====like");
+//        logger.info("====测试=====like");
         long likeCount = likeService.like(hostHolder.getUser().getId(), EntityType.ENTITY_NEWS, newsId);
         // 更新喜欢数
         News news = newsService.getById(newsId);
@@ -58,7 +58,7 @@ public class LikeController {
     @RequestMapping(path = {"/dislike"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String dislike(@Param("newId") int newsId) {
-        logger.info("====测试=====dislike");
+//        logger.info("====测试=====dislike");
         long likeCount = likeService.disLike(hostHolder.getUser().getId(), EntityType.ENTITY_NEWS, newsId);
         // 更新喜欢数
         newsService.updateLikeCount(newsId, (int) likeCount);
